@@ -1,0 +1,100 @@
+def welcome_tictactoe():
+    """Vytiskne uvítací text dle zadání projektu. Jako funkce definovaná zvlášť. """
+    print("Welcome to Tic Tac Toe")
+    print("=" * 40)
+    print("GAME RULES:")
+    print("Each player can place one mark (or stone)")
+    print("per turn on the 3×3 grid. The WINNER is")
+    print("who succeeds in placing three of their")
+    print("marks in a:")
+    print("* horizontal,")
+    print("* vertical or")
+    print("* diagonal row.")
+    print("=" * 40)
+    print("LET'S START THE GAME!")
+
+def display_board(board):
+    """Vytvoří prázdnou hrací plochu. Plocha (board) bude fungovat jako seznam, a to ani nemusím Pythonu výslovně "říkat předem", takže rovnou můžu definovat i "line" jako parametr. Takže dál budu pracovat s "board" a "line"."""
+    for line in board:
+        print("+---+---+---+")
+        print("| " + " | ".join(line) + " |")
+    print("+---+---+---+")
+
+def check_victory(board):
+    """Zkontroluje, zda je někdo vítězem. Používá výše zavedený a "ne"definovaný seznam s názvem "board" s prvky "line". """
+    for line in board:
+        if line[0] == line[1] == line[2] != " ":
+            return True
+
+    for column in range(3):
+        if board[0][column] == board[1][column] == board[2][column] != " ":
+            return True
+
+    if board[0][0] == board[1][1] == board[2][2] != " ":
+        return True
+    if board[0][2] == board[1][1] == board[2][0] != " ":
+        return True
+
+    return False
+
+def draw(board):
+    """Zkontroluje, zda je remíza, tím, že zjistí, že je hrací plocha zcela zaplněná a dosud nedošlo k výhře, což by ukončilo program dříve a nedošlo by to sem."""
+    for line in board:
+        if " " in line:
+            return False
+    return True
+
+def tictactoe():
+    """Hlavní princip hry."""
+    # Inicializuj prázdnou hrací plochu a definuje jednotlivá pole v seznamu 3 řádků a 3 sloupců
+    welcome_tictactoe()
+    # Seznam "board" se reálně objeví až tady, každý prvek je políčko (spot) typu " " a board je vlastně seznam 3 seznamů.
+    board = [[" " for spot in range(3)] for spot in range(3)]
+
+    # Proměnná pro aktuálního hráče
+    current_player = "X"
+
+    while True:
+        display_board(board)
+        print(f"PLAYER {current_player}.")
+        
+        # Požádej hráče o vstup (číslo mezi 1 a 9); . 
+        try:
+            volba = int(input("Please enter your move number (1-9): "))
+            if volba < 1 or volba > 9:
+                print("--- INVALID NUMBER! --- Please enter number between 1 and 9.")
+                continue
+        except ValueError:
+            print("--- INVALID NUMBER!--- Please enter number between 1 and 9.")
+            continue
+
+        # Přepočet na řádek a column. Musela jsem odečíst jedničku, jinak mi to nefungovalo, protože Python počítá od nuly.
+        # Čili první řádek je 0, druhý 1 a třetí 2. Řádek zjistím celočíselným dělením. Zbytek je pole.
+        line = (volba - 1) // 3
+        column = (volba - 1) % 3
+
+        # Zkontroluj, zda pole není obsazené
+        if board[line][column] != " ":
+            print("--- SPOT ALREADY TAKEN! --- Please try again.")
+            continue
+
+        # Proveď tah
+        board[line][column] = current_player
+
+        # Zkontroluj vítěze
+        if check_victory(board):
+            display_board(board)
+            print(f"Player {current_player} WINS!")
+            break
+
+        # Zkontroluj remízu
+        if draw(board):
+            display_board(board)
+            print("DRAW!")
+            break
+
+        # Změň hráče
+        current_player = "O" if current_player == "X" else "X"
+
+# Spusť hru
+tictactoe()
