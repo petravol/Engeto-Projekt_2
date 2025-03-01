@@ -14,14 +14,14 @@ def welcome_tictactoe():
     print("LET'S START THE GAME!")
 
 def display_board(board):
-    """Vytvoří prázdnou hrací plochu. Plocha (board) bude fungovat jako seznam, a to ani nemusím Pythonu výslovně "říkat předem", takže rovnou můžu definovat i "line" jako parametr. Takže dál budu pracovat s "board" a "line"."""
+    """Vytvoří prázdnou hrací plochu."""
     for line in board:
         print("+---+---+---+")
         print("| " + " | ".join(line) + " |")
     print("+---+---+---+")
 
 def check_victory(board):
-    """Zkontroluje, zda je někdo vítězem. Používá výše zavedený a "ne"definovaný seznam s názvem "board" s prvky "line". """
+    """Zkontroluje, zda je někdo vítězem. """
     for line in board:
         if line[0] == line[1] == line[2] != " ":
             return True
@@ -38,7 +38,7 @@ def check_victory(board):
     return False
 
 def draw(board):
-    """Zkontroluje, zda je remíza, tím, že zjistí, že je hrací plocha zcela zaplněná a dosud nedošlo k výhře, což by ukončilo program dříve a nedošlo by to sem."""
+    """Zkontroluje, zda je remíza."""
     for line in board:
         if " " in line:
             return False
@@ -48,7 +48,6 @@ def tictactoe():
     """Hlavní princip hry."""
     # Inicializuj prázdnou hrací plochu a definuje jednotlivá pole v seznamu 3 řádků a 3 sloupců
     welcome_tictactoe()
-    # Seznam "board" se reálně objeví až tady, každý prvek je políčko (spot) typu " " a board je vlastně seznam 3 seznamů.
     board = [[" " for spot in range(3)] for spot in range(3)]
 
     # Proměnná pro aktuálního hráče
@@ -68,8 +67,7 @@ def tictactoe():
             print("--- INVALID NUMBER!--- Please enter number between 1 and 9.")
             continue
 
-        # Přepočet na řádek a column. Musela jsem odečíst jedničku, jinak mi to nefungovalo, protože Python počítá od nuly.
-        # Čili první řádek je 0, druhý 1 a třetí 2. Řádek zjistím celočíselným dělením. Zbytek je pole.
+        # Přepočet na řádek a column. 
         line = (volba - 1) // 3
         column = (volba - 1) % 3
 
